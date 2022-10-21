@@ -1,22 +1,12 @@
 import dotenv from 'dotenv';
 import pg from 'pg';
 
-dotenv.config();
+dotenv.config({ path: "../.env"} );
 
 const { Pool } = pg;
 
-const user = 'postgres';
-const password = 'abcd';
-const host = 'localhost';
-const port = 5432;
-const database = 'laboleria';
-
 const connection = new Pool({
-    user,
-  password,
-  host,
-  port,
-  database
-});
+    connectionString: process.env.DATABASE_URL,
+  });
 
 export default connection;

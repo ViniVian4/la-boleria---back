@@ -17,12 +17,12 @@ async function validateCake(req, res, next) {
     }
 
     try {
-        const name = await connection.query(
+        const dbCake = await connection.query(
             `SELECT * FROM cakes WHERE name ILIKE $1`,
             [newCake.name]
         );
 
-        if (name.rows.length !== 0) {
+        if (dbCake.rows.length !== 0) {
             return res.sendStatus(409);
         }
     } catch (error) {
