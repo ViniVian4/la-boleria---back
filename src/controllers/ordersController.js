@@ -135,4 +135,44 @@ async function getOrderId(req, res) {
     }
 }
 
-export { postOrders, getOrders, getOrderId }
+async function getOrderClientId (req, res) {
+    const { id } = req.params;
+
+    try {
+        const orders = await connection.query(`
+        SELECT 
+            orders.id AS "orderId",
+            orders."createdAt",
+            orders.quantity,
+            orders."totalPrice",
+            cakes.name AS "cakeName"
+        FROM orders
+        JOIN clients
+            ON orders."clientId" = clients.id
+        JOIN cakes
+            ON orders."cakeId" = cakes.id 
+        WHERE clients.id=$1;`, [id]);
+
+        let ordersList = orders.rows;
+
+        if (ordersList.length === 0) {
+            return res.sendStatus(404);
+        }
+
+        const finalOrders = ordersList.map((data) => (
+            {
+                orderId: data.orderId,
+                createdAt: `${data.createdAt.getFullYear()}-${data.createdAt.getMonth()}-${data.createdAt.getDate()} ${data.createdAt.getHours()}:${data.createdAt.getMinutes()}`,
+                quantity: data.quantity,
+                totalPrice: data.totalPrice,
+                cakeName: data.cakeName
+            }));
+        
+
+        res.status(200).send(finalOrders);
+    } catch (error) {
+        return res.sendStatus(500);
+    }
+}
+
+export { postOrders, getOrders, getOrderId, getOrderClientId }

@@ -7,5 +7,6 @@ const router = express.Router();
 router.post('/order', validateOrder, postOrders);
 router.get('/orders', getOrders);
 router.get('/orders/:id', getOrderId);
+router.get('/clients/:id/orders', getOrderClientId);
 
 export default router;
