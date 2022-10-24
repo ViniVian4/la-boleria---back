@@ -2,7 +2,7 @@ CREATE TABLE "cakes" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR(50) NOT NULL UNIQUE,
   "price" NUMERIC NOT NULL,
-  "image" VARCHAR(30) NOT NULL,
+  "image" VARCHAR(31) NOT NULL,
   "description" TEXT
 );
 
